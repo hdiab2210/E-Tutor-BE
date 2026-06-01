@@ -16,10 +16,7 @@ exports.getCourses = async (req, res) => {
 
         //  Search (title + description)
         if (search) {
-            query.$or = [
-                { title: { $regex: search, $options: 'i' } },
-                { description: { $regex: search, $options: 'i' } }
-            ];
+            query.$text = { $search: `"${search}"` };
         }
 
         //  Filters
@@ -76,27 +73,27 @@ exports.getCourses = async (req, res) => {
 };
 
 exports.getRecentCourses = async (req, res) => {
-  try {
-    const courses = await Course.find()
-      .sort({ createdAt: -1 }) // newest first
-      .limit(10);
+    try {
+        const courses = await Course.find()
+            .sort({ createdAt: -1 }) // newest first
+            .limit(10);
 
-    res.json(courses);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+        res.json(courses);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 };
 
 exports.getBestSellingCourses = async (req, res) => {
-  try {
-    const courses = await Course.find()
-      .sort({ studentsCount: -1 }) // highest first
-      .limit(10);
+    try {
+        const courses = await Course.find()
+            .sort({ studentsCount: -1 }) // highest first
+            .limit(10);
 
-    res.json(courses);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+        res.json(courses);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 };
 
 exports.createCourse = async (req, res) => {
@@ -121,7 +118,7 @@ exports.createCourse = async (req, res) => {
             category,
             level,
             tools: tools ? tools.split(',') : [],
-            image: `/src/uploads/${req.file.filename}`
+            image: `/uploads/${req.file.filename}`
         });
 
         await course.save();

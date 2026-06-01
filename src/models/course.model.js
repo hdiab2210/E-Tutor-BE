@@ -2,7 +2,9 @@ const mongoose = require('mongoose');
 
 const courseSchema = new mongoose.Schema({
     title: { type: String, required: true },
-    description: String,
+    description: {
+        type: String
+    },
     price: { type: Number, required: true },
     image: String,
 
@@ -22,6 +24,26 @@ const courseSchema = new mongoose.Schema({
     studentsCount: { type: Number, default: 0 },
 
     createdAt: { type: Date, default: Date.now }
+});
+
+// Course schema indexes
+
+courseSchema.index({
+    title: "text",
+    description: "text"
+}); // full-text search
+
+courseSchema.index({ category: 1 });
+courseSchema.index({ level: 1 });
+courseSchema.index({ tools: 1 });
+
+courseSchema.index({ createdAt: -1 });
+courseSchema.index({ price: 1 });
+
+// optimized compound index (very important)
+courseSchema.index({
+    category: 1,
+    createdAt: -1
 });
 
 module.exports = mongoose.model('Course', courseSchema);

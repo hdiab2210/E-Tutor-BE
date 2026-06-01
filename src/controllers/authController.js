@@ -50,11 +50,9 @@ exports.signup = async (req, res) => {
             password: hashedPassword
         });
 
-        const token = generateAccessToken(user);
 
         res.status(201).json({
             message: "User created successfully",
-            token,
             user: {
                 id: user._id,
                 email: user.email,
@@ -101,7 +99,7 @@ exports.login = async (req, res) => {
             user: {
                 id: user._id,
                 email: user.email,
-                username: user.username
+                name: user.firstName + user.lastName
             }
         });
 

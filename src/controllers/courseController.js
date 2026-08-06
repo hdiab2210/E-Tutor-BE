@@ -103,6 +103,7 @@ exports.createCourse = async (req, res) => {
             description,
             price,
             category,
+            rating,
             level,
             tools
         } = req.body;
@@ -116,6 +117,7 @@ exports.createCourse = async (req, res) => {
             description,
             price,
             category,
+            rating,
             level,
             tools: tools ? tools.split(',') : [],
             image: `/uploads/${req.file.filename}`
